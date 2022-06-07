@@ -43,7 +43,7 @@ const { calculateDbNameWithLimit, hibernateSnakeCase } = require('../utils/db');
 const defaultApplicationOptions = require('../jdl/jhipster/default-application-options');
 const databaseTypes = require('../jdl/jhipster/database-types');
 const { databaseData } = require('./sql-constants');
-const { ANGULAR_X: ANGULAR, REACT, VUE, NO: CLIENT_FRAMEWORK_NO } = require('../jdl/jhipster/client-framework-types');
+const { ANGULAR_X: ANGULAR, REACT, VUE, SVELTE, NO: CLIENT_FRAMEWORK_NO } = require('../jdl/jhipster/client-framework-types');
 const {
   PRIORITY_NAMES: {
     LOADING,
@@ -348,6 +348,9 @@ class JHipsterBaseGenerator extends PrivateBase {
       prettierExtensions = `${prettierExtensions},cjs,mjs,js,ts,tsx,css,scss`;
       if (this.jhipsterConfig.clientFramework === VUE) {
         prettierExtensions = `${prettierExtensions},vue`;
+      }
+      if (this.jhipsterConfig.clientFramework === SVELTE) {
+        prettierExtensions = `${prettierExtensions},svelte`;
       }
     }
     if (!this.skipServer && !this.jhipsterConfig.skipServer) {
@@ -1701,10 +1704,12 @@ class JHipsterBaseGenerator extends PrivateBase {
     }
     dir.closeSync();
 
-    return [...new Set((this.jhipsterConfig.entities || []).concat(entityNames))]
+    const entities = [...new Set((this.jhipsterConfig.entities || []).concat(entityNames))]
       .map(entityName => ({ name: entityName, definition: this.readEntityJson(entityName) }))
-      .filter(entity => entity && !this.isBuiltInUser(entity.name) && !this.isBuiltInAuthority(entity.name))
+      .filter(entity => entity && !this.isBuiltInUser(entity.name) && !this.isBuiltInAuthority(entity.name) && entity.definition)
       .sort(isBefore);
+    this.jhipsterConfig.entities = entities.map(({ name }) => name);
+    return entities;
   }
 
   /**
