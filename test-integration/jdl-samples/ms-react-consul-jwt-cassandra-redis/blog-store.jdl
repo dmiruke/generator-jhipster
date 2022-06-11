@@ -26,7 +26,7 @@ application {
     creationTimestamp 1617901618886
     // TODO switch to cassandra
     // databaseType cassandra
-    prodDatabaseType postgresql
+    databaseType no
     jhiPrefix custom
     jwtSecretKey "ZjY4MTM4YjI5YzMwZjhjYjI2OTNkNTRjMWQ5Y2Q0Y2YwOWNmZTE2NzRmYzU3NTMwM2NjOTE3MTllOTM3MWRkMzcyYTljMjVmNmQ0Y2MxOTUzODc0MDhhMTlkMDIxMzI2YzQzZDM2ZDE3MmQ3NjVkODk3OTVmYzljYTQyZDNmMTQ="
     packageName com.okta.developer.gateway
@@ -99,10 +99,12 @@ application {
   entities Notification
 }
 
+/*
 @ChangelogDate(20210408164809)
 entity UserData {
   address String
 }
+*/
 
 @ChangelogDate(20210408164810)
 entity Blog {
