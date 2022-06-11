@@ -185,9 +185,9 @@ module.exports = class extends BaseDockerGenerator {
 
             if (database === CASSANDRA) {
               // node config
-              const cassandraClusterYaml = jsyaml.load(this.fs.read(`${path}/src/main/docker/cassandra-cluster.yml`));
-              const cassandraNodeConfig = cassandraClusterYaml.services[`${databaseServiceName}-node`];
-              parentConfiguration[`${databaseServiceName}-node`] = cassandraNodeConfig;
+              // const cassandraClusterYaml = jsyaml.load(this.fs.read(`${path}/src/main/docker/cassandra-cluster.yml`));
+              // const cassandraNodeConfig = cassandraClusterYaml.services[`${databaseServiceName}-node`];
+              // parentConfiguration[`${databaseServiceName}-node`] = cassandraNodeConfig;
 
               // migration service config
               const cassandraMigrationYaml = jsyaml.load(this.fs.read(`${path}/src/main/docker/cassandra-migration.yml`));
