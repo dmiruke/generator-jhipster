@@ -190,8 +190,15 @@ module.exports = class extends BaseDockerGenerator {
               // parentConfiguration[`${databaseServiceName}-node`] = cassandraNodeConfig;
 
               // migration service config
-              const cassandraMigrationYaml = jsyaml.load(this.fs.read(`${path}/src/main/docker/cassandra-migration.yml`));
-              const cassandraMigrationConfig = cassandraMigrationYaml.services[`${databaseServiceName}-migration`];
+              const cassandraMigrationConfig = databaseYaml.services[`${databaseServiceName}-migration`];
+
+              // replace script with prod
+              cassandraMigrationConfig.environment = [
+                ...cassandraMigrationConfig.environment.filter(envVariable =>
+                  !envVariable.includes('CREATE_KEYSPACE_SCRIPT')
+                ),
+                'CREATE_KEYSPACE_SCRIPT=create-keyspace-prod.cql'
+              ]
               cassandraMigrationConfig.build.context = relativePath;
               const cqlFilesRelativePath = normalize(pathjs.relative(this.destinationRoot(), `${path}/src/main/resources/config/cql`));
               cassandraMigrationConfig.volumes[0] = `${cqlFilesRelativePath}:/cql:ro`;
