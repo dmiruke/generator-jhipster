@@ -193,7 +193,7 @@ module.exports = class extends BaseDockerGenerator {
               const cassandraMigrationYaml = jsyaml.load(this.fs.read(`${path}/src/main/docker/cassandra-migration.yml`));
               const cassandraMigrationConfig = cassandraMigrationYaml.services[`${databaseServiceName}-migration`];
               cassandraMigrationConfig.build.context = relativePath;
-              const createKeyspaceScript = cassandraMigrationConfig.services[`${databaseServiceName}-migration`].environment.find(envVariable =>
+              const createKeyspaceScript = cassandraMigrationConfig.environment.find(envVariable =>
                 envVariable.includes('CREATE_KEYSPACE_SCRIPT')
               );
               cassandraMigrationConfig.environment.push(createKeyspaceScript);
